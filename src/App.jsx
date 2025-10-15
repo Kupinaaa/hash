@@ -84,45 +84,34 @@ export default function App() {
   }, [input, passphrase, salt])
 
   return (
-    <div className="min-h-full bg-gradient-to-b from-slate-50 to-white text-slate-900 dark:from-slate-900 dark:to-slate-950 dark:text-slate-100">
-      <div className="mx-auto max-w-2xl px-4 py-10">
+    <div className="min-h-full text-slate-100">
+      <div className="mx-auto max-w-2xl px-4 py-12">
         <header className="mb-8 text-center">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-800/70 ring-1 ring-slate-700/70">
+            <span className="text-xl">#</span>
+          </div>
           <h1 className="text-3xl font-semibold tracking-tight">SHA-256 Hash Generator</h1>
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-2 text-sm text-slate-400">
             Enter a passphrase and an optional salt. Results update instantly.
           </p>
         </header>
 
-        <section className="rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/60">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="col-span-1 sm:col-span-2">
-              <label htmlFor="pass" className="mb-1 block text-sm font-medium">
-                Passphrase
-              </label>
-              <input
-                id="pass"
-                type="text"
-                placeholder="Enter passphrase"
-                value={passphrase}
-                onChange={(e) => setPassphrase(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base shadow-sm outline-none ring-slate-400 focus:border-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-800"
-                autoComplete="off"
-              />
-            </div>
-            <div className="col-span-1 sm:col-span-2">
-              <label htmlFor="salt" className="mb-1 block text-sm font-medium">
-                Salt (optional)
-              </label>
-              <input
-                id="salt"
-                type="text"
-                placeholder="Enter salt"
-                value={salt}
-                onChange={(e) => setSalt(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base shadow-sm outline-none ring-slate-400 focus:border-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-800"
-                autoComplete="off"
-              />
-            </div>
+        <section className="rounded-2xl bg-slate-900/60 p-6 shadow-2xl ring-1 ring-slate-800/80 backdrop-blur">
+          <div className="grid gap-4">
+            <Field
+              id="pass"
+              label="Passphrase"
+              value={passphrase}
+              placeholder="Enter passphrase"
+              onChange={setPassphrase}
+            />
+            <Field
+              id="salt"
+              label="Salt (optional)"
+              value={salt}
+              placeholder="Enter salt"
+              onChange={setSalt}
+            />
           </div>
 
           <div className="mt-6 grid gap-4">
@@ -141,7 +130,7 @@ export default function App() {
           </div>
         </section>
 
-        <footer className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <footer className="mt-6 text-center text-xs text-slate-400">
           No data leaves your browser. Uses Web Crypto SHA-256.
         </footer>
       </div>
@@ -152,7 +141,7 @@ export default function App() {
 function ResultRow({ label, children }) {
   return (
     <div className="grid items-start gap-2 sm:grid-cols-[180px_1fr_auto]">
-      <div className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+      <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
         {label}
       </div>
       <div className="min-w-0">{children}</div>
@@ -162,14 +151,33 @@ function ResultRow({ label, children }) {
 
 function Mono({ value, placeholder = '' }) {
   return (
-    <div className="flex min-h-[40px] items-center justify-between gap-3 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-100">
-      <div className="min-w-0 break-all">
+    <div className="flex min-h-[44px] items-center justify-between gap-3 rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 font-mono text-sm text-slate-100">
+      <div className="min-w-0 break-words">
         {value ? (
           <span className="select-all">{value}</span>
         ) : (
-          <span className="text-slate-400">{placeholder}</span>
+          <span className="text-slate-500">{placeholder}</span>
         )}
       </div>
+    </div>
+  )
+}
+
+function Field({ id, label, value, placeholder, onChange }) {
+  return (
+    <div>
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-slate-300">
+        {label}
+      </label>
+      <input
+        id={id}
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-base text-slate-100 shadow-sm outline-none ring-slate-500 placeholder:text-slate-500 focus:border-slate-500 focus:ring-2"
+        autoComplete="off"
+      />
     </div>
   )
 }
